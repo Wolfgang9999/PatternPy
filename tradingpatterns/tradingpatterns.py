@@ -97,6 +97,7 @@ def detect_channel(df, window=3):
     df['high_roll_max'] = df['High'].rolling(window=roll_window).max()
     df['low_roll_min'] = df['Low'].rolling(window=roll_window).min()
     df['trend_high'] = df['High'].rolling(window=roll_window).apply(lambda x: 1 if (x[-1]-x[0])>0 else -1 if (x[-1]-x[0])<0 else 0)
+    # TODO: The condition for trend_high and trend_low is same. Correct it.
     df['trend_low'] = df['Low'].rolling(window=roll_window).apply(lambda x: 1 if (x[-1]-x[0])>0 else -1 if (x[-1]-x[0])<0 else 0)
     # Create a boolean mask for Channel Up pattern
     mask_channel_up = (df['high_roll_max'] >= df['High'].shift(1)) & (df['low_roll_min'] <= df['Low'].shift(1)) & (df['high_roll_max'] - df['low_roll_min'] <= channel_range * (df['high_roll_max'] + df['low_roll_min'])/2) & (df['trend_high'] == 1) & (df['trend_low'] == 1)
